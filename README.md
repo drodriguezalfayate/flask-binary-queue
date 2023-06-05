@@ -49,6 +49,9 @@ This package depends on `flask` and `requests` don't forget to add those depende
 
 ```pip install requests```
 
+## Running tests
+Just execute `python -m unittest discover test`
+
 ## Running
 For development or testing purposes just execute `flask run`
 
