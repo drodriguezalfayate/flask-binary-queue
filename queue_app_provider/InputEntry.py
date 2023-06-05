@@ -21,11 +21,12 @@ from queue_app_provider.HandlerOutput import HandlerOutput
 class InputEntry:
     def __init__(self, file_storage: FileStorage, callback):
         self.callback = callback
-        _, self.file = tempfile.mkstemp()
+        self.fh, self.file = tempfile.mkstemp()
         file_storage.save(self.file)
 
     # Temporary file removal
     def clear(self):
+        os.close(self.fh)
         os.remove(self.file)
 
     # Data processing function called from `QueueThread` main queue
