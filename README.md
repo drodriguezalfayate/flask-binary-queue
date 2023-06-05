@@ -42,6 +42,13 @@ In fact there are may things to improve over this simple scenario, for example:
 * In case that callback call fails, due to origin fallen, it should be nice to
   retry the callback action after some minutes.
 
+## Dependencies
+This package depends on `flask` and `requests` don't forget to add those dependencies to your installation
+
+```pip install flask```
+
+```pip install requests```
+
 ## Running
 For development or testing purposes just execute `flask run`
 
