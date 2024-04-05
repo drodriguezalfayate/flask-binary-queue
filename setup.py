@@ -10,7 +10,6 @@ setup(
     author='David Rodriguez Alfayate',  # Type in your name
     author_email='david.rodriguez.alfayate@gmail.com',  # Type in your E-Mail
     url='https://github.com/drodriguezalfayate/flask-binary-queue/',  # Provide either the link to your github or to your website
-    download_url='https://github.com/drodriguezalfayate/flask-binary-queue/archive/v_01.tar.gz',  # I explain this later on
     keywords=['QUEUE BACKGROUND PROCESSOR'],  # Keywords that define your package best
     install_requires=[  # I get to this in a second
         'flask',
