@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='queue_app_provider',  # How you named your package folder (MyLib)
     packages=['queue_app_provider'],  # Chose the same as "name"
-    version='0.1',  # Start with a small number and increase it with every change you make
+    version='0.2',  # Start with a small number and increase it with every change you make
     license='MIT',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Simple backend processor that receives binary data and stores it in a queue that it''s processed in '
                 'a background thread.',  # Give a short description about your library
