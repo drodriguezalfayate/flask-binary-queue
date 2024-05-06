@@ -4,7 +4,6 @@ from typing import Callable
 
 from werkzeug.datastructures import FileStorage
 
-
 # Very simple class, an InputEntry is just a holder for queue entries in our
 # processing system.
 #
@@ -16,12 +15,16 @@ from werkzeug.datastructures import FileStorage
 # Created by: David Rodríguez Alfayate
 # Version: 1.0
 from queue_app_provider.HandlerOutput import HandlerOutput
+import logging
+
+logger = logging.getLogger('InputEntry')
 
 
 class InputEntry:
     def __init__(self, file_storage: FileStorage, callback):
         self.callback = callback
         self.fh, self.file = tempfile.mkstemp()
+        logger.debug('Storing temporary file in %s', self.file)
         file_storage.save(self.file)
 
     # Temporary file removal

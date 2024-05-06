@@ -12,6 +12,9 @@ import threading
 from typing import Callable
 
 from queue_app_provider.HandlerOutput import HandlerOutput
+import logging
+
+logger = logging.getLogger('QueueThread')
 
 
 class QueueThread(threading.Thread):
@@ -24,7 +27,7 @@ class QueueThread(threading.Thread):
         self.timeout = timeout
 
     def run(self):
-        logging.debug("Starting main queue processor")
+        logger.debug("Starting main queue processor")
         while True:
             # Very simple logic, we are just reading the queue in a non-blocking way,
             # therefore if queue is not empty we recover last entry and process it
@@ -41,12 +44,12 @@ class QueueThread(threading.Thread):
                 entry.handle(self.handler)
 
             if global_break:
-                logging.debug("Breaking thread due to user interrupt")
+                logger.debug("Breaking thread due to user interrupt")
                 break
 
             # As stated above we wait til handler is set or timeout is exceded,
             # if timeout is exceded we continue with normal workflow, that is
             # run forever ;)
             if self.event_handler.wait(timeout=self.timeout):
-                logging.debug("Breaking thread due to user interrupt")
+                logger.debug("Breaking thread due to user interrupt")
                 break
