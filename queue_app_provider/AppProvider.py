@@ -2,6 +2,7 @@ import queue
 import signal
 import sys
 import threading
+import logging
 from typing import Callable
 
 from flask import Request
@@ -10,6 +11,8 @@ from flask import abort
 from queue_app_provider.HandlerOutput import HandlerOutput
 from queue_app_provider.InputEntry import InputEntry
 from queue_app_provider.QueueThread import QueueThread
+
+logger = logging.getLogger('queue-app-provider:app-provider')
 
 
 # This is the main class and the one that should be used from the external flask app,
@@ -55,16 +58,24 @@ class AppProvider:
     # When the request is properly processed we send requester - as soon as possible - a 204
     # if conditions are not satisfied, our response is just a simple 404.
     def process(self, request: Request):
+        logger.debug('New request from %s ', request.remote_addr)
         if 'file' not in request.files.keys() or 'callback' not in request.form.keys():
+            logger.debug('There is no file or callback input data')
             abort(404)
         file = request.files['file']
         callback = request.form['callback']
-        if not file.filename or not callback or not file.content_type in self.accepted_types:
+        if not file.filename or not callback:
+            logger.debug('File or callback are invalid, aborting')
+            abort(404)
+        if file.content_type not in self.accepted_types:
+            logger.debug('Input content-type %s is not allowed, aborting', file.content_type)
             abort(404)
 
         # We create the entry, enqueueing it properly
         entry = InputEntry(file, callback)
         self.queue.put_nowait(entry)
+
+        logger.debug('Initial processing is successful, enqueuing request for further analysis')
 
         # Just a no-content response is enough, we are not returning anything especially interesting indeed.
         return "", 204
