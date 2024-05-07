@@ -30,16 +30,16 @@ class HandlerOutput:
         try:
             # On fail
             if not self.success:
-                logger.debug('Sending fail message %s to % endpoint', self.text, callback)
+                logger.debug('Sending fail message %s to %s endpoint', self.text, callback)
                 requests.post(callback, json={"success": False, "error": self.text})
                 return
             # On success, but a file
             if self.file:
-                logger.debug('Sending success file to % endpoint', callback)
+                logger.debug('Sending success file to %s endpoint', callback)
                 requests.post(callback, json={"success": True}, files={'file': open(self.file, 'rb')})
                 return
             # Normal text
-            logger.debug('Sending success message %s to % endpoint', self.text, callback)
+            logger.debug('Sending success message %s to %s endpoint', self.text, callback)
             requests.post(callback, json={"success": True, "data": self.text})
         except requests.exceptions.RequestException as e:
             # In a more complex scenario we should, perhaps, enqueue this callback response, expecting
