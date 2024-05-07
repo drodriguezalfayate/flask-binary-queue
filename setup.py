@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='queue_app_provider',  # How you named your package folder (MyLib)
     packages=['queue_app_provider'],  # Chose the same as "name"
-    version='0.2',  # Start with a small number and increase it with every change you make
+    version='0.3',  # Start with a small number and increase it with every change you make
     license='MIT',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Simple backend processor that receives binary data and stores it in a queue that it''s processed in '
                 'a background thread.',  # Give a short description about your library
@@ -11,9 +11,10 @@ setup(
     author_email='david.rodriguez.alfayate@gmail.com',  # Type in your E-Mail
     url='https://github.com/drodriguezalfayate/flask-binary-queue/',  # Provide either the link to your github or to your website
     keywords=['QUEUE BACKGROUND PROCESSOR'],  # Keywords that define your package best
-    install_requires=[  # I get to this in a second
+    install_requires=[
         'flask',
         'requests',
+        'werkzeug'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
