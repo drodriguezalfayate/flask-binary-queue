@@ -17,14 +17,14 @@ from werkzeug.datastructures import FileStorage
 from queue_app_provider.HandlerOutput import HandlerOutput
 import logging
 
-logger = logging.getLogger('InputEntry')
+logger = logging.getLogger('queue-app-provider:input-entry')
 
 
 class InputEntry:
     def __init__(self, file_storage: FileStorage, callback):
         self.callback = callback
         self.fh, self.file = tempfile.mkstemp()
-        logger.debug('Storing temporary file in %s', self.file)
+        logger.debug('Storing temporary file in %r', self.file)
         file_storage.save(self.file)
 
     # Temporary file removal
@@ -35,10 +35,11 @@ class InputEntry:
     # Data processing function called from `QueueThread` main queue
     # we just execute the handler method
     def handle(self, handler: Callable[[str], HandlerOutput]):
-        # Generamos la salida de la clase, y tenemos con ella
-        # que enviar estos datos al sistema de procesado externo
+        # We process input, sending response to external
+        # processing system
         output = handler(self.file)
         try:
+            logger.debug('Handler result is %r', output)
             output.notify(self.callback)
         finally:
             self.clear()

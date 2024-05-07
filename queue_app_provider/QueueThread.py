@@ -3,7 +3,7 @@ import queue
 import threading
 
 
-# This is an independent queue processor thread, it just makes non blocking read
+# This is an independent queue processor thread, it just makes non-blocking read
 # on a queue and, process results using the handler input method.
 # Queue is stopped using provided event_handler
 #
@@ -12,9 +12,8 @@ import threading
 from typing import Callable
 
 from queue_app_provider.HandlerOutput import HandlerOutput
-import logging
 
-logger = logging.getLogger('QueueThread')
+logger = logging.getLogger('queue-app-provider:queue-thread')
 
 
 class QueueThread(threading.Thread):
@@ -41,14 +40,15 @@ class QueueThread(threading.Thread):
                     global_break = True
                     break
                 entry = self.queue.get_nowait()
+                logger.debug('Analyzing input entry')
                 entry.handle(self.handler)
 
             if global_break:
                 logger.debug("Breaking thread due to user interrupt")
                 break
 
-            # As stated above we wait til handler is set or timeout is exceded,
-            # if timeout is exceded we continue with normal workflow, that is
+            # As stated above we wait til handler is set or timeout is exceeded,
+            # if timeout is exceeded we continue with normal workflow, that is
             # run forever ;)
             if self.event_handler.wait(timeout=self.timeout):
                 logger.debug("Breaking thread due to user interrupt")
