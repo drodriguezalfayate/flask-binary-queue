@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-logger = logging.getLogger('HandlerOutput')
+logger = logging.getLogger('queue-app-provider:handler-output')
 
 
 # This class is a holder for all information regarding the processing
@@ -39,6 +39,7 @@ class HandlerOutput:
                 requests.post(callback, json={"success": True}, files={'file': open(self.file, 'rb')})
                 return
             # Normal text
+            logger.debug('Sending success message %s to % endpoint', self.text, callback)
             requests.post(callback, json={"success": True, "data": self.text})
         except requests.exceptions.RequestException as e:
             # In a more complex scenario we should, perhaps, enqueue this callback response, expecting
